@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <form action="upload" method="post" enctype="multipart/form-data">
+        <p><input type="file" name="userfile" onchange="fileNameCheck(this.value)"></p>
+        <p><input type="submit"></p>
+    </form>
+    <script>
+        function fileNameCheck(fileName) {
+            // var _fileLen = filename.length;
+            // var _lastDot = filename.lastIndexOf('.');
+            // var _fileExt = filename.substring(_lastDot, _fileLen).toLowerCase();
+
+            alert( filename);
+
+            return;
+
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,31 @@
+<meta charset="utf-8" />
+<html>
+
+<head>
+    <title>파일 다운로드 오류</title>
+</head>
+
+<body>
+    <div style="text-align: center">
+        <br><br><br>
+        <p>최종 주문서 파일이 존재하지 않습니다.!!</p>
+        <p>업로드 관리 페이지에서 주문파일 업로드 상태를 확인해주시길 바랍니다.</p>
+
+        <p><input type="button" id ="btn_up" value="업로드 관리 페이지" /></p><br><br>
+        <p><input type="button" id ="btn_home" value="홈으로 이동" /></p>
+        
+    </div>
+
+    <script>
+        document.getElementById("btn_up").addEventListener('click', function() {
+            location.href = "/upload";
+        });
+
+        document.getElementById("btn_home").addEventListener('click', function() {
+            location.href ="/";
+        });
+       
+    </script>
+</body>
+
+</html>

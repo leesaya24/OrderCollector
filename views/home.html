@@ -1,0 +1,30 @@
+<meta charset="utf-8" />
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>주문서 수집기</title>
+</head>
+ 
+<body>
+    <div style="text-align: center">
+        <br><br><br>
+        <p>주문서 수집기</p>
+        <p><input type="button" id ="btn_up" value="업로드 관리 페이지" /></p>
+        <p><input type="button" id ="btn_dn" value="최종주문서 다운로드" /></p>
+        
+    </div>
+
+    <script>
+        document.getElementById("btn_up").addEventListener('click', function() {
+            location.href = "/upload";
+        });
+
+        document.getElementById("btn_dn").addEventListener('click', function() {
+            location.href ="/download/?filename=data.xlsx";
+        });
+       
+    </script>
+</body>
+
+</html>

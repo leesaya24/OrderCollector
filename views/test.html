@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+    <p>주문서 업로드</p>
+
+    <form action="upload" method="post" enctype="multipart/form-data">
+        파일선택 : <input type="file" name="userfile" onchange="checkFile(this)"><br>
+        <p><input type="submit" id='submitButton' value="파일전송" disabled></p>
+    </form>
+
+    <p>최종 주문서 다운로드</p>
+    <form action="download" method="get">
+        <p><input type="submit" value="다운로드"></p>
+    </form>
+
+    
+    <script>
+        function checkFile(f) {
+            var submitButton = document.getElementById('submitButton');
+            submitButton.disabled = true;
+
+            var file = f.files;
+            var temp = file[0].name.split(".");
+
+            if (temp[1] != 'xlsx') {
+                alert('엑셀파일이 아닙니다 : ' + file[0].name);
+                f.outerHTML = f.outerHTML; // 폼초기화;
+            }
+            else {
+                submitButton.disabled = false;
+            }
+        }
+
+
+
+    </script>
+
+</body>
+
+</html>
