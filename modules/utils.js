@@ -86,6 +86,12 @@ module.exports.makeMainHtml = function(filelist)  // 업로드 관리자 페이�
 
 module.exports.makeTotalOrderFile = function(callback)  //업로드된 데이터 파일을 모두 오픈해서, 머지작업 후  totalorder.xlsx 을 저장한다.
 {
+    try
+    { 
+        fs.mkdirSync('data_download'); 
+    }
+    catch(e){}
+
     makeExcelMerge(function(jsonData) {
         var xlsfile = json2xls(jsonData);
         fs.writeFileSync('data_download/totalorder.xlsx', xlsfile, 'binary');

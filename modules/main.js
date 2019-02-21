@@ -9,12 +9,17 @@ const querystring = require('querystring');
 
 var _storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, 'data_upload/')
+        try {
+            fs.mkdirSync('data_upload');
+        }
+        catch (e) { }
+        
+        cb(null, 'data_upload/')
     },
     filename: function (req, file, cb) {
-      cb(null, file.originalname);
+        cb(null, file.originalname);
     }
-  })
+})
 
 const upload = multer({ storage: _storage });
 
