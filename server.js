@@ -10,15 +10,6 @@ app.use(bodyParser.json());
 
 const router = require('./modules/main')(app);
 
-
-
 var server = app.listen(3000, function(){ 
     console.log("Start server on localhost:3000");
 });
-
-
-
-// app.post('/post_reciver', function(req, res){
-
-//     res.send(req.body.id);
-// })
