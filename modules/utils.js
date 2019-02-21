@@ -2,57 +2,33 @@ var fs = require('fs');
 const xlsx = require('xlsx');  
 const json2xls = require('json2xls');
 
-module.exports.getUploadFileList = function (callback) {  // 이넘을 호출하는 위치에서 구현하는 거임
-
-    // 파일리스트를 구해서 html 형식으로 리턴
+module.exports.getUploadFileList = function (callback) {  // 업로드된 파일 리스트를 구하는 모듈
 
     var fileInfos = new Array();
 
-    fs.readdir('data_upload', function (error, filelist) {   // 파일 리스트를 구한거고
-
-        if (!filelist)
+    fs.readdir('data_upload', function (error, filelist) {  
+        if (isEmpty(filelist))
             callback(fileInfos);
         else {
-            for (var i = 0; i < filelist.length; i++) {  // 파일 정보를 구함 ( 파일 생성일)
+            for (var i = 0; i < filelist.length; i++) {  
                 var fileName = filelist[i];
 
                 makeFileInfo(fileName, function (result) {
                     fileInfos.push(result);
 
                     if (fileInfos.length == filelist.length)
-                        callback(fileInfos); // 콜백함수 리턴 타이밍은 비동기 작업이 완료되는 시점에서 호출하는 거임.
+                        callback(fileInfos); 
                 });
             }
         }
     });
 };
 
-module.exports.makeHtml = function(fileInfos)
+module.exports.makeMainHtml = function(filelist)  // 업로드 관리자 페이지 생성 모듈
 {
-    var output='';
-
-    for (var i =0; i < fileInfos.length; i++)
-    {
-        output += '<p>'+fileInfos[i]+'    <input type="button" value="지우기" />'+'</p>';
-    }
-
-    return output;
-}
-
-module.exports.makeMainHtml = function(filelist)  // 동적 메인페이지를 생성하는 펑션.
-{
-    // filelist 는 순수하게 넘어온 파일리스트이다.
-
     var fileListHtml = makeHtmlFileList(filelist);
 
-
-
-    // 여기서 버튼에 대한 스크립트를 구해야 겠네
-
-    // filelist 는 순수파일이름 리스트 이다.  이놈을 가지고 자바스크립트를 새로 구하자.
-     var scripts = makeScripts(filelist);
-
-     if (filelist.length == 0)
+    if (filelist.length == 0)
         fileListHtml ='<p>업로드된 파일이 없습니다.<p>';
 
     var output =`
@@ -108,32 +84,25 @@ module.exports.makeMainHtml = function(filelist)  // 동적 메인페이지를 �
 
 }
 
-module.exports.makeTotalOrderFile = function(callback)  // 제이슨 머지
+module.exports.makeTotalOrderFile = function(callback)  //업로드된 데이터 파일을 모두 오픈해서, 머지작업 후  totalorder.xlsx 을 저장한다.
 {
-    // 업로드된 데이터 파일을 모두 오픈해서 totalorder.xlsx 을 저장한다.
-
     makeExcelMerge(function(jsonData) {
         var xlsfile = json2xls(jsonData);
-        fs.writeFileSync('data_download/data.xlsx', xlsfile, 'binary');
+        fs.writeFileSync('data_download/totalorder.xlsx', xlsfile, 'binary');
         callback();
     });
-
 }
 
 
-function makeExcelMerge(callback)
+function makeExcelMerge(callback) // 업로드 폴더에 있는 모든 엑셀파일을 오픈해서 Json으로 머지.
 {
-    //var data = {};
-    //var strdata = JSON.stringify(data);
     var jasonObject;
 
-    fs.readdir('data_upload', function (error, filelist) {   // 파일 리스트를 구한거고
+    fs.readdir('data_upload', function (error, filelist) {   
 
         if (filelist.length == 0)
             callback(jasonObject);
 
-        // 각 파일들에게서 제이슨 데이터를 수집하고
-        // 다시 엑셀파일로 라이트 한다.
         var i = 0;
         for (i =0; i < filelist.length; i++)
         {
@@ -155,7 +124,7 @@ function makeExcelMerge(callback)
     });
 }
 
-function excelFile2json(fileFullPath, callback)
+function excelFile2json(fileFullPath, callback)  // 엑셀파일을 제이슨으로 변경.
 {
     var resData;
 
@@ -173,49 +142,21 @@ function excelFile2json(fileFullPath, callback)
 }
 
 
-
-
-
-
-
-
-
-
-
-
-function makeFileInfo(fileName, callback)
+function makeFileInfo(fileName, callback) // 파일정보생성
 {
     var fileInfo;
     fs.stat('data_upload/' + fileName, function (err, stats) {
         if (err) console.log(err);
         else 
         {
-            //fileInfo = fileName+' : '+stats.size+' '+stats.mtime;
-            fileInfo = fileName; // 일단은 파일 네임만 던져준다.
+            fileInfo = fileName; 
             callback(fileInfo);
         }
     });
 }
 
 
-
-function makeScripts(fileList)
-{
-    var output =``;
-
-    for (var i =0; i < fileList.length; i++)
-    {
-        output += `
-            document.getElementById("${fileList[i]}").addEventListener('click', function() {
-                location.href = "/deleteFile/?filename=${fileList[i]}";
-            });`
-    }
-
-    return output;
-
-}
-
-function makeHtmlFileList(fileList)
+function makeHtmlFileList(fileList) // 파일 삭제를 위한 폼 생성.
 {
     var output = ``;
     for (var i = 0; i < fileList.length; i++) {
@@ -232,4 +173,9 @@ function makeHtmlFileList(fileList)
     return output;
 
 }
+
+var isEmpty = function (value) {
+    if (value == "" || value == null || value == undefined || (value != null && typeof value == "object" && !Object.keys(value).length)) { return true }
+    else { return false }
+};
 

@@ -13,7 +13,7 @@ const router = require('./modules/main')(app);
 
 
 var server = app.listen(3000, function(){ 
-    console.log("Express server has stared on port 3000");
+    console.log("Start server on localhost:3000");
 });
 
 
