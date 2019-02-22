@@ -39,9 +39,8 @@
 
 
 
-[소스코드 설명]
-
-1) ./server.js  : nodejs의 express 웹서버를 실행을 구현한 부분입니다.
+[Server side]
+1) ./server.js  : nodejs의 express 웹서버 실행을 구현한 부분입니다.
 2) ./modul/main.js : 웹 클라이언트의 GET/POST 요청을 처리 하기 위한 곳입니다.
 3) ./modul/utils.js : 파일처리, 파싱, 동적html 생성등 위한 유틸리티 함수들을 구현한 곳입니다.
 
